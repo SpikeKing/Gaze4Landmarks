@@ -27,3 +27,11 @@ def box_from_list(p_list):
     y_c = int((y_max - y_min) // 2 + y_min)
 
     return (x_min, y_min), (x_max, y_max), (x_c, y_c)
+
+
+def center_from_list(p_list):
+    """
+    提取列表中心点
+    """
+    _, _, (x_c, y_c) = box_from_list(p_list)
+    return x_c, y_c

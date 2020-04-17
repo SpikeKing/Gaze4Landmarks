@@ -8,17 +8,22 @@ Created by C. L. Wang on 2020/3/13
 import cv2
 
 
-def draw_box(img_bgr, l, t, w, h):
+def draw_box(img_bgr, x_min, y_min, x_max, y_max):
     import cv2
+    import copy
     import matplotlib.pyplot as plt
+    img_bgr = copy.deepcopy(img_bgr)
+
+    x_min, y_min, x_max, y_max = int(x_min), int(y_min), int(x_max), int(y_max)
 
     ih, iw, _ = img_bgr.shape
     color = (0, 0, 255)
     tk = 5
 
-    cv2.rectangle(img_bgr, (l, t), (l + w, t + h), color, tk)
+    cv2.rectangle(img_bgr, (x_min, y_min), (x_max, y_max), color, tk)
 
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+
     plt.imshow(img_rgb)
     plt.show()
 
@@ -35,6 +40,7 @@ def draw_points(img_bgr, pnts):
     for p in pnts:
         cv2.circle(img_bgr, tuple(p), r, color, tk)
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+
     plt.imshow(img_rgb)
     plt.show()
 
@@ -43,6 +49,7 @@ def show_img_bgr(img_bgr):
     import matplotlib.pyplot as plt
     import cv2
     img_rgb = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
+
     plt.imshow(img_rgb)
     plt.show()
 
