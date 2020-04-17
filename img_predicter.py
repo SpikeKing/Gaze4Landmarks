@@ -85,15 +85,32 @@ class ImgPredicter(object):
 
     def predict(self, img_op):
         res_list = self.predict_landmarks(img_op)
-        count = 0
+
         for res in res_list:
             pre_landmark, x1, y1 = res
-            for (x, y) in pre_landmark.astype(np.int32):
-                if count == 96 or count == 97:
-                    cv2.circle(img_op, (x1 + x, y1 + y), 2, (0, 255, 255), -1)
-                else:
-                    cv2.circle(img_op, (x1 + x, y1 + y), 1, (0, 0, 255))
-                count += 1
+            pre_landmark = pre_landmark.astype(np.int32)
+
+            # 参考WFLW: https://wywu.github.io/projects/LAB/WFLW.html
+            le_points = [pre_landmark[i] for i in range(60, 68)]  # 左眼
+            re_points = [pre_landmark[i] for i in range(68, 76)]  # 右眼
+
+            li_center = pre_landmark[96]  # 左瞳孔
+            ri_center = pre_landmark[97]  # 右瞳孔
+
+            for p in le_points:
+                x, y = p
+                cv2.circle(img_op, (x1 + x, y1 + y), 2, (0, 0, 255), -1)
+
+            for p in re_points:
+                x, y = p
+                cv2.circle(img_op, (x1 + x, y1 + y), 2, (0, 255, 0), -1)
+
+            x, y = li_center
+            cv2.circle(img_op, (x1 + x, y1 + y), 3, (0, 255, 255), -1)
+
+            x, y = ri_center
+            cv2.circle(img_op, (x1 + x, y1 + y), 3, (0, 255, 255), -1)
+
         return img_op
 
     def predict_path(self, img_path):
