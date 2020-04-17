@@ -14,7 +14,8 @@ from torchvision import transforms
 
 from models.pfld import PFLDInference
 from mtcnn.detector import detect_faces
-from root_dir import DATA_DIR, PTH_DIR, IMGS_DIR
+from root_dir import PTH_DIR, IMGS_DIR
+from utils.mat_utils import box_from_list
 
 
 class ImgPredicter(object):
@@ -94,6 +95,9 @@ class ImgPredicter(object):
             le_points = [pre_landmark[i] for i in range(60, 68)]  # 左眼
             re_points = [pre_landmark[i] for i in range(68, 76)]  # 右眼
 
+            _, _, le_center = box_from_list(le_points)
+            _, _, re_center = box_from_list(re_points)
+
             li_center = pre_landmark[96]  # 左瞳孔
             ri_center = pre_landmark[97]  # 右瞳孔
 
@@ -105,11 +109,21 @@ class ImgPredicter(object):
                 x, y = p
                 cv2.circle(img_op, (x1 + x, y1 + y), 2, (0, 255, 0), -1)
 
+            x, y = le_center
+            print('[Info] le_center: {}'.format(le_center))
+            cv2.circle(img_op, (x1 + x, y1 + y), 1, (255, 0, 255), -1)
+
+            x, y = re_center
+            print('[Info] re_center: {}'.format(re_center))
+            cv2.circle(img_op, (x1 + x, y1 + y), 1, (255, 255, 0), -1)
+
             x, y = li_center
-            cv2.circle(img_op, (x1 + x, y1 + y), 3, (0, 255, 255), -1)
+            print('[Info] li_center: {}'.format(li_center))
+            cv2.circle(img_op, (x1 + x, y1 + y), 1, (0, 255, 255), -1)
 
             x, y = ri_center
-            cv2.circle(img_op, (x1 + x, y1 + y), 3, (0, 255, 255), -1)
+            print('[Info] ri_center: {}'.format(ri_center))
+            cv2.circle(img_op, (x1 + x, y1 + y), 1, (0, 255, 255), -1)
 
         return img_op
 
@@ -123,7 +137,7 @@ class ImgPredicter(object):
 
 def main():
     ip = ImgPredicter()
-    img_path = os.path.join(IMGS_DIR, 'aoa_yuna.jpg')
+    img_path = os.path.join(IMGS_DIR, 'xxx.jpg')
     ip.predict_path(img_path)
 
 
