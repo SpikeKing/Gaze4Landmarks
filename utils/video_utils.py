@@ -143,9 +143,10 @@ def write_video(vid_path, frames, fps, h, w):
     :param h: 视频高
     :return: 写入完成的视频路径
     """
-    import cv2
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')  # note the lower case，可以
+    # fourcc = cv2.VideoWriter_fourcc('m', 'j', 'p', 'g')
     vw = cv2.VideoWriter(filename=vid_path, fourcc=fourcc, fps=fps, frameSize=(w, h), isColor=True)
+    # vw = cv2.VideoWriter(vid_path, fourcc, fps, (w, h))
 
     for frame in frames:
         vw.write(frame)

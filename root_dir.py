@@ -14,3 +14,4 @@ GAZE_MODEL = os.path.join(ROOT_DIR, 'checkpoint', 'gaze')
 
 DATA_DIR = os.path.join(ROOT_DIR, 'data')
 IMGS_DIR = os.path.join(DATA_DIR, 'imgs')
+VIDS_DIR = os.path.join(DATA_DIR, 'vids')

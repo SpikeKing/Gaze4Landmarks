@@ -126,4 +126,5 @@ dmypy.json
 .idea/
 
 data/imgs/
+data/vids/
 checkpoint/gaze/

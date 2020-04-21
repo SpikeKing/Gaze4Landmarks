@@ -18,6 +18,7 @@ from root_dir import PTH_DIR, IMGS_DIR
 from utils.mat_utils import box_from_list
 
 
+@DeprecationWarning
 class ImgPredicter(object):
     """
     图像预测
@@ -38,7 +39,7 @@ class ImgPredicter(object):
 
     def predict_landmarks(self, img_op):
         height, width = img_op.shape[:2]
-        bounding_boxes, landmarks = detect_faces(img_op)
+        bounding_boxes, landmarks = detect_faces(img_op)  # 检测人脸
 
         res_list = []
 
