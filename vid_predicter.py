@@ -16,8 +16,7 @@ from utils.video_utils import init_vid, write_video
 
 class VidPredicter(object):
     def __init__(self):
-        # self.ip = ImgPredicter()
-        self.gp = GazePredicter()
+        self.gp = GazePredicter()  # 目光预测
         self.frames_dir = os.path.join(VIDS_DIR, 'frames')
         self.out_path = os.path.join(VIDS_DIR, 'out.{}.mp4'.format(get_current_time_str()))
         mkdir_if_not_exist(self.frames_dir)
@@ -38,13 +37,12 @@ class VidPredicter(object):
                 continue
 
             # show_img_bgr(img_draw)  # 瞳孔中心
-            # img_path = os.path.join(self.frames_dir, '{}.jpg'.format(str(i)))
-            # cv2.imwrite(img_path, img_draw)
-            # if i == 10:
-            #     break
+            img_path = os.path.join(self.frames_dir, '{}.jpg'.format(str(i).zfill(4)))
+            cv2.imwrite(img_path, img_draw)
+            print('[Info] 帧预测完成: {}'.format(str(i)))
 
-        print('[Info] 写入视频帧数: {}'.format(len(img_list)))
-        write_video(self.out_path, img_list, fps, h, w)
+        # print('[Info] 写入视频帧数: {}'.format(len(img_list)))
+        # write_video(self.out_path, img_list, fps, h, w)
 
 
 def main():
