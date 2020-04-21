@@ -276,6 +276,7 @@ def _generate_bboxes(probs, offsets, scale, threshold):
 def detect_faces(image,
                  min_face_size=20.0,
                  thresholds=[0.6, 0.7, 0.8],
+                 # thresholds=[0.4, 0.6, 0.5],
                  nms_thresholds=[0.7, 0.7, 0.7]):
 
     pnet, rnet, onet = PNet(), RNet(), ONet()

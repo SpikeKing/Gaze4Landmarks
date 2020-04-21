@@ -15,7 +15,7 @@ import tensorflow as tf
 from mtcnn.detector import detect_faces
 from root_dir import GAZE_MODEL, IMGS_DIR
 from utils.mat_utils import center_from_list
-from utils.video_utils import draw_box, draw_points, show_img_grey, show_img_bgr
+from utils.video_utils import show_img_bgr, draw_points
 
 
 class GazePredicter(object):
@@ -143,7 +143,7 @@ class GazePredicter(object):
         landmarks = np.array([tuple_from_dlib_shape(i) for i in range(num_landmarks)])
 
         # 2. 关键步骤, 绘制关键点
-        # draw_points(face_dict['img'], landmarks)
+        draw_points(face_dict['img'], landmarks)
         print('[Info] landmarks: {}'.format(landmarks.shape))
 
         face_dict['landmarks'] = landmarks
@@ -275,11 +275,12 @@ class GazePredicter(object):
     def draw_gaze_img(self, face_dict):
         face_dict = copy.deepcopy(face_dict)
 
-        th = 1
+        th = 2
         for i in range(2):
             img_op = face_dict['img']
             eye_landmarks = face_dict['olandmarks'][i]
             eye_image = face_dict['eyes'][i]['image']
+            eye_radius = face_dict['oradius'][i][0]
             eye = face_dict['eyes'][i]
             eye_side = face_dict['eyes'][i]['side']
 
@@ -310,13 +311,18 @@ class GazePredicter(object):
             # show_img_bgr(img_op)
 
             iris_center = eye_landmarks[16]
-            eyeball_center = np.array(center_from_list(eye_landmarks[0:8]))
+            # eyeball_center = np.array(center_from_list(eye_landmarks[0:8]))
+            eyeball_center = eye_landmarks[17]
+            eyeball_margin = [eyeball_center[0] + eye_radius, eyeball_center[1]]
+            eyeball_radius = np.linalg.norm(eyeball_margin - eyeball_center)
+            # eyeball_radius = np.linalg.norm(iris_center - eyeball_center)
+            # print('[Info] eyeball_radius: {}'.format(eyeball_radius))
 
             cv2.drawMarker(
                 img_op,
                 tuple(np.round(iris_center).astype(np.int32)),
                 color=(255, 0, 255), markerType=cv2.MARKER_CROSS, markerSize=4,
-                thickness=th, line_type=cv2.LINE_AA,
+                thickness=th + 3, line_type=cv2.LINE_AA,
             )
             # show_img_bgr(eye_image_annotated)  # 瞳孔中心
 
@@ -324,12 +330,9 @@ class GazePredicter(object):
                 img_op,
                 tuple(np.round(eyeball_center).astype(np.int32)),
                 color=(255, 0, 0), markerType=cv2.MARKER_CROSS, markerSize=4,
-                thickness=th, line_type=cv2.LINE_AA,
+                thickness=th + 3, line_type=cv2.LINE_AA,
             )
-            # show_img_bgr(eye_image_annotated)  # 瞳孔中心
-
-            eyeball_radius = np.linalg.norm(iris_center - eyeball_center)
-            # print('[Info] eyeball_radius: {}'.format(eyeball_radius))
+            # show_img_bgr(eye_image_annotated)  # 眼睛中心
 
             i_x0, i_y0 = iris_center
             e_x0, e_y0 = eyeball_center
@@ -377,6 +380,7 @@ class GazePredicter(object):
         img_gray = cv2.cvtColor(img_op, cv2.COLOR_BGR2GRAY)
         print('[Info] 图像尺寸: {}'.format(img_op.shape))
         bounding_boxes, landmarks = detect_faces(img_op)
+        print('[Info] 人脸检测: {}'.format(landmarks))
         face_dict = dict()
         face_dict['img'] = img_op
         face_dict['gray'] = img_gray
@@ -403,9 +407,22 @@ class GazePredicter(object):
 
 
 def main():
-    img_path = os.path.join(IMGS_DIR, 'xxx.jpg')
+    # img_path = os.path.join(IMGS_DIR, 'xxx.jpg')
+
+    # img_path = os.path.join(IMGS_DIR, 'kkk-1.jpg')
+    # img_path = os.path.join(IMGS_DIR, 'kkk-2.jpg')
+    # img_path = os.path.join(IMGS_DIR, 'kkk-5.jpg')
+    # img_path = os.path.join(IMGS_DIR, 'kkk-6.jpg')
+
+    # for i in range(1, 8):
+
+    img_path = os.path.join(IMGS_DIR, 'kkk-{}g.jpg'.format(7))
+
     gp = GazePredicter()
-    gp.predict_path(img_path)
+    face_dict = gp.predict_path(img_path)
+    img_op = face_dict['img_draw']
+    out_path = img_path + ".out.jpg"
+    cv2.imwrite(out_path, img_op)
 
 
 if __name__ == '__main__':
