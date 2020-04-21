@@ -103,27 +103,27 @@ class ImgPredicter(object):
 
             for p in le_points:
                 x, y = p
-                cv2.circle(img_op, (x1 + x, y1 + y), 2, (0, 0, 255), -1)
+                cv2.circle(img_op, (x1 + x, y1 + y), 3, (0, 0, 255), -1)
 
             for p in re_points:
                 x, y = p
-                cv2.circle(img_op, (x1 + x, y1 + y), 2, (0, 255, 0), -1)
+                cv2.circle(img_op, (x1 + x, y1 + y), 3, (0, 255, 0), -1)
 
             x, y = le_center
             print('[Info] le_center: {}'.format(le_center))
-            cv2.circle(img_op, (x1 + x, y1 + y), 1, (255, 0, 255), -1)
+            cv2.circle(img_op, (x1 + x, y1 + y), 5, (255, 0, 255), -1)
 
             x, y = re_center
             print('[Info] re_center: {}'.format(re_center))
-            cv2.circle(img_op, (x1 + x, y1 + y), 1, (255, 255, 0), -1)
+            cv2.circle(img_op, (x1 + x, y1 + y), 5, (255, 255, 0), -1)
 
             x, y = li_center
             print('[Info] li_center: {}'.format(li_center))
-            cv2.circle(img_op, (x1 + x, y1 + y), 1, (0, 255, 255), -1)
+            cv2.circle(img_op, (x1 + x, y1 + y), 5, (0, 255, 255), -1)
 
             x, y = ri_center
             print('[Info] ri_center: {}'.format(ri_center))
-            cv2.circle(img_op, (x1 + x, y1 + y), 1, (0, 255, 255), -1)
+            cv2.circle(img_op, (x1 + x, y1 + y), 5, (255, 0, 255), -1)
 
         return img_op
 
