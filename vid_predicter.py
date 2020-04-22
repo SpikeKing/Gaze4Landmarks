@@ -37,6 +37,7 @@ class VidPredicter(object):
                 img_draw = face_dict['img_draw']
                 # img_list.append(img_draw)
             except Exception as e:
+                print('[Info] e: {}'.format(e))
                 continue
 
             img_path = os.path.join(self.frames_dir, '{}.jpg'.format(str(i).zfill(4)))
