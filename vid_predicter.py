@@ -5,6 +5,7 @@ Copyright (c) 2019. All rights reserved.
 Created by C. L. Wang on 2020/4/21
 """
 import os
+import time
 
 import cv2
 
@@ -22,27 +23,25 @@ class VidPredicter(object):
         mkdir_if_not_exist(self.frames_dir)
 
     def predict_path(self, path):
+        print('[Info] 视频路径: {}'.format(path))
         cap, n_frame, fps, h, w = init_vid(path)
-
-        img_list = []
+        n_frame = 100
+        # img_list = []
         for i in range(0, n_frame):
             print('-' * 50)
+            s_time = time.time()
             cap.set(cv2.CAP_PROP_POS_FRAMES, i)
             ret, frame = cap.read()
             try:
                 face_dict = self.gp.predict(frame)
                 img_draw = face_dict['img_draw']
-                img_list.append(img_draw)
+                # img_list.append(img_draw)
             except Exception as e:
                 continue
 
-            # show_img_bgr(img_draw)  # 瞳孔中心
             img_path = os.path.join(self.frames_dir, '{}.jpg'.format(str(i).zfill(4)))
             cv2.imwrite(img_path, img_draw)
-            print('[Info] 帧预测完成: {}'.format(str(i)))
-
-        # print('[Info] 写入视频帧数: {}'.format(len(img_list)))
-        # write_video(self.out_path, img_list, fps, h, w)
+            print('[Info] 帧预测完成: {} / {}'.format(str(i), time.time() - s_time))
 
 
 def main():

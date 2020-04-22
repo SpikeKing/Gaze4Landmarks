@@ -29,6 +29,23 @@ def box_from_list(p_list):
     return (x_min, y_min), (x_max, y_max), (x_c, y_c)
 
 
+def wh_from_list(p_list):
+    import numpy as np
+    x_list = [p[0] for p in p_list]
+    y_list = [p[1] for p in p_list]
+
+    x_arr = np.array(x_list)
+    y_arr = np.array(y_list)
+
+    x_min, x_max = int(np.min(x_arr)), int(np.max(x_arr))
+    y_min, y_max = int(np.min(y_arr)), int(np.max(y_arr))
+
+    w = x_max - x_min
+    h = y_max - y_min
+
+    return w, h
+
+
 def center_from_list(p_list):
     """
     提取列表中心点
