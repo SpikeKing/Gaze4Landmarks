@@ -25,7 +25,7 @@ class GazePredicter(object):
         # self.sess = tf.Session()
 
         # Specify which GPU(s) to use
-        os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # Or 2, 3, etc. other than 0
+        os.environ["CUDA_VISIBLE_DEVICES"] = "3"  # Or 2, 3, etc. other than 0
 
         # On CPU/GPU placement
         config = tf.compat.v1.ConfigProto(allow_soft_placement=True, log_device_placement=True)
