@@ -22,7 +22,16 @@ from utils.video_utils import show_img_bgr, draw_box
 
 class GazePredicter(object):
     def __init__(self):
-        self.sess = tf.Session()
+        # self.sess = tf.Session()
+
+        # Specify which GPU(s) to use
+        os.environ["CUDA_VISIBLE_DEVICES"] = "1"  # Or 2, 3, etc. other than 0
+
+        # On CPU/GPU placement
+        config = tf.compat.v1.ConfigProto(allow_soft_placement=True, log_device_placement=True)
+        config.gpu_options.allow_growth = True
+        self.sess = tf.compat.v1.Session(config=config)
+
         pb_path = os.path.join(GAZE_MODEL, 'good_frozen.pb')
         with tf.gfile.FastGFile(pb_path, 'rb') as f:
             graph_def = tf.GraphDef()
