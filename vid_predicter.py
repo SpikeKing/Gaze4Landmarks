@@ -25,7 +25,7 @@ class VidPredicter(object):
     def predict_path(self, path):
         print('[Info] 视频路径: {}'.format(path))
         cap, n_frame, fps, h, w = init_vid(path)
-        n_frame = 100
+        # n_frame = 100
         # img_list = []
         for i in range(0, n_frame):
             print('-' * 50)
